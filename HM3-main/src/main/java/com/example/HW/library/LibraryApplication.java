@@ -161,25 +161,9 @@ public class LibraryApplication implements CommandLineRunner {
 					System.out.print("Enter book ISBN: ");
 					isbn = scanner.next();
 
-					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-					Date date = new Date();
-					String today = dateFormat.format(date);
-					Calendar cal = Calendar.getInstance();
-					cal.add(Calendar.DATE, 7);
-					Date date2 = cal.getTime();
-					String returnDate = dateFormat.format(date2);
-
+					Issue issue = library.createIssue(usn,studentName,isbn);
 					Optional<Book> bookOptional1 = bookRepository.findById(isbn);
-					Student student = new Student(usn , studentName);
-					Optional<Student> studentOpt = studentRepository.findById(usn);
-					if(studentOpt.isEmpty()) {
-						studentRepository.save(student);
-					}else{
-						student = studentOpt.get();
-					}
-					Issue issue = new Issue(today, returnDate , student , bookOptional1.get());
-					issueRepository.save(issue);
-					System.out.println("Book "+bookOptional1.get().getTitle()+" issued. Return date : "+ returnDate);
+					System.out.println("Book "+bookOptional1.get().getTitle()+" issued. Return date : "+ issue.getReturnDate());
 					break;
 
 				case 7:
