@@ -19,13 +19,14 @@ public class Book {
     private String title;
     private String category;
     private Integer quantity;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
 
-
     @ManyToMany(mappedBy = "books")
     private List<Student> students;
+
 
     public Book(String bookISBN, String title, String category, Integer quantity) {
         this.bookISBN = bookISBN;

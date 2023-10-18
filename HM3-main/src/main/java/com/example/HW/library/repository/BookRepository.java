@@ -12,26 +12,19 @@ import java.util.Optional;
 @Repository
 public interface BookRepository extends JpaRepository<Book, String> {
 
-    //Optional<Book> findBookByTitle(String Title);
-    //List<Book> findBookByCategory(String Category);
-
     public Optional<Book> findBookByTitle(String title);
 
     List<Book> findAll();
 
     List<Book> findBooksByCategory(String category1);
 
-
     List<Book> findByStudentsUsn(String usn);
 
     @Query("SELECT b FROM Book b JOIN b.students s WHERE s.usn = :usn")
     List<Book> findBooksByStudentUsn(@Param("usn") String usn);
 
-
-
-    // List<Book> findBooksByAuthor(String name);
-
-
+    @Query("SELECT b FROM Book b JOIN Author a ON b.author = a WHERE a.name = ?1 ")
+    List<Book> findAllWhereNameParams(String name);
 
 //    public Optional<Book> findBookByBookISBN(String bookISBN);
 

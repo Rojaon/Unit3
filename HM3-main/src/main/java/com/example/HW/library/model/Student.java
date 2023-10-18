@@ -27,6 +27,10 @@ public class Student {
     )
     private List<Book> books;
 
+    public Student(String usn, String name) {
+        this.usn = usn;
+        this.name = name;
+    }
 
     public String getUsn() {
         return usn;

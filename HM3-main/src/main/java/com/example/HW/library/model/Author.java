@@ -16,8 +16,6 @@ import lombok.NoArgsConstructor;
         private Integer authorId;
         private String name;
         private String email;
-
-
         @OneToOne(mappedBy = "author", cascade = CascadeType.ALL)
         private Book authorBook;
 
