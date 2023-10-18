@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Entity
-//@Data
+@Data
 @NoArgsConstructor
 public class Book {
     @Id
@@ -33,55 +33,55 @@ public class Book {
         this.category = category;
         this.quantity = quantity;
     }
-
-    public String getBookISBN() {
-        return bookISBN;
-    }
-
-    public void setBookISBN(String bookISBN) {
-        this.bookISBN = bookISBN;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
-    @Override
-    public String toString() {
-        return "Book : \n" +
-                "bookISBN :" + bookISBN +"\n" +
-                "title : " + title + "\n"  +
-                "category : " + category + "\n"  +
-                "quantity : " + quantity
-                ;
-    }
+//
+//    public String getBookISBN() {
+//        return bookISBN;
+//    }
+//
+//    public void setBookISBN(String bookISBN) {
+//        this.bookISBN = bookISBN;
+//    }
+//
+//    public String getTitle() {
+//        return title;
+//    }
+//
+//    public void setTitle(String title) {
+//        this.title = title;
+//    }
+//
+//    public String getCategory() {
+//        return category;
+//    }
+//
+//    public void setCategory(String category) {
+//        this.category = category;
+//    }
+//
+//    public Integer getQuantity() {
+//        return quantity;
+//    }
+//
+//    public void setQuantity(Integer quantity) {
+//        this.quantity = quantity;
+//    }
+//
+//    public Author getAuthor() {
+//        return author;
+//    }
+//
+//    public void setAuthor(Author author) {
+//        this.author = author;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "Book : \n" +
+//                "bookISBN :" + bookISBN +"\n" +
+//                "title : " + title + "\n"  +
+//                "category : " + category + "\n"  +
+//                "quantity : " + quantity
+//                ;
+//    }
 }
 
