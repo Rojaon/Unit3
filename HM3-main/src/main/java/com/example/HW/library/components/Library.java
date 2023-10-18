@@ -12,18 +12,7 @@ import java.util.Optional;
 @Component
 public class Library {              //methods
     @Autowired
-    BookRepository bookRepository;
-    @Autowired
     AuthorRepository authorRepository;
-
-    public Book findBookByTitle(String title) {
-        Optional<Book> bookOptional = bookRepository.findBookByTitle(title);
-        if (bookOptional.isPresent()) {
-            return bookOptional.get();
-        } else {
-            throw new IllegalArgumentException("Book not found.");
-        }
-    }
 
     public void createBookAndAuthor(String authorName, String authorEmail, Book book) {
         Author author = new Author(authorName,authorEmail,book);

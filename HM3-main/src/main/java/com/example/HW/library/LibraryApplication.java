@@ -6,7 +6,6 @@ import com.example.HW.library.components.Library;
 import com.example.HW.library.model.Book;
 import com.example.HW.library.model.Issue;
 import com.example.HW.library.model.Student;
-import com.example.HW.library.repository.AuthorRepository;
 import com.example.HW.library.repository.BookRepository;
 import com.example.HW.library.repository.IssueRepository;
 import com.example.HW.library.repository.StudentRepository;
@@ -36,14 +35,11 @@ public class LibraryApplication implements CommandLineRunner {
 	StudentRepository studentRepository;
 	@Autowired
 	IssueRepository issueRepository;
-	@Autowired
-	AuthorRepository authorRepository;
 
 	@Override
-	public void run(String... args) throws Exception {              ///Main
+	public void run(String... args) throws Exception {
 
 		Scanner scanner = new Scanner(System.in);
-//		Library library = new Library();
 
 		int choice;
 		do {
@@ -64,32 +60,24 @@ public class LibraryApplication implements CommandLineRunner {
 				case 1:
 
 					System.out.println("Add a book");
-
 					System.out.println("Enter book title: ");
 					String title = scanner.nextLine();
-
 					System.out.println("Enter book category: ");
 					String category = scanner.nextLine();
-
 					System.out.println("Enter author name: ");
 					String authorName = scanner.nextLine();
-
 					System.out.println("Enter author email: ");
 					String authorEmail = scanner.nextLine();
-
 					System.out.println("Enter book ISBN: ");
 					String isbn = scanner.nextLine();
-
 					System.out.println("Enter quantity of books: ");
 					int quantity = scanner.nextInt();
 					scanner.nextLine(); // Consume the newline character
 
 					Book book = new Book(isbn,title,category,quantity);
 					library.createBookAndAuthor(authorName,authorEmail,book);
-
 					System.out.println("Book added successfully.");
 					break;
-
 
 				case 2:
 
@@ -106,6 +94,7 @@ public class LibraryApplication implements CommandLineRunner {
 						System.out.println("Book not found.");
 					}
 					break;
+
 				case 3:
 
 					System.out.println("Enter book category: ");
@@ -126,7 +115,6 @@ public class LibraryApplication implements CommandLineRunner {
 					}
 					break;
 
-
 				case 4:
 
 					System.out.println("Enter author name: ");
@@ -145,7 +133,6 @@ public class LibraryApplication implements CommandLineRunner {
 					}
 
 					break;
-
 
 				case 5:
 					System.out.println("List all books along with author:");
@@ -184,14 +171,48 @@ public class LibraryApplication implements CommandLineRunner {
 
 					Optional<Book> bookOptional1 = bookRepository.findById(isbn);
 					Student student = new Student(usn , studentName);
-					studentRepository.save(student);
+					Optional<Student> studentOpt = studentRepository.findById(usn);
+					if(studentOpt.isEmpty()) {
+						studentRepository.save(student);
+					}else{
+						student = studentOpt.get();
+					}
 					Issue issue = new Issue(today, returnDate , student , bookOptional1.get());
 					issueRepository.save(issue);
 					System.out.println("Book "+bookOptional1.get().getTitle()+" issued. Return date : "+ returnDate);
 					break;
+
 				case 7:
 
+					System.out.print("Enter USN: ");
+					String usn1;
+					boolean isValidInput = false;
+
+					do {
+						usn1 = scanner.next();
+
+						if (usn1.matches("\\d+")) {
+							isValidInput = true;
+						} else {
+							System.out.println("Invalid input. Please enter a valid USN.\n");
+							System.out.print("Enter USN: ");
+						}
+					} while (!isValidInput);
+
+					List<Issue> issueList = issueRepository.findByStudentsUsn(usn1);
+					if (issueList.isEmpty()) {
+						System.out.println("No student found with the specified USN.\n");
+					} else {
+						for (Issue issue3 : issueList) {
+							System.out.println("Book Title: " + issue3.getIssueBook().getTitle());
+							System.out.println("Student Name: " + issue3.getIssueStudent().getName());
+							System.out.println("Return date: " + issue3.getReturnDate());
+							System.out.println("--------------------");
+						}
+					}
+
 					break;
+
 				case 8:
 					// Exit the application
 					System.out.println("Exiting the application...");

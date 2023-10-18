@@ -19,7 +19,7 @@ public class Student {
     private String name;
 
 
-    @ManyToMany
+    @OneToMany
     @JoinTable(
             name = "student_book",
             joinColumns = @JoinColumn(name = "student_usn"),
@@ -32,27 +32,9 @@ public class Student {
         this.name = name;
     }
 
-    public String getUsn() {
-        return usn;
-    }
-
-    public void setUsn(String usn) {
-        this.usn = usn;
-    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 }

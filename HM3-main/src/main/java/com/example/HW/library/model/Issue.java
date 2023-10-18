@@ -19,7 +19,7 @@ public class Issue {
 
     private String returnDate;
 
-    @OneToOne
+    @ManyToOne
     private Student issueStudent;
 
     @OneToOne
