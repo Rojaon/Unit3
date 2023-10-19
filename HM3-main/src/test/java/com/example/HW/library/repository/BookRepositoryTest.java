@@ -5,9 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Optional;
-
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class BookRepositoryTest {
@@ -17,13 +15,14 @@ class BookRepositoryTest {
     @BeforeEach
     public void setUp() {
 
-        Book B2 = new Book("456","Disnay","cardiology",1);
+        Book B2 = new Book("456","Disney","cardiology",1);
 
-        Book savedBook2 = bookRepository.save(B2);
+        bookRepository.save(B2);
     }
     @Test
-    void findBookByCategory() {
-        Optional<Book> bookOptional1 = bookRepository.findBookByCategory("cardiology");
-        System.out.println(bookOptional1.get());
+    void findBooksByCategory() {
+        List<Book> books = bookRepository.findBooksByCategory("cardiology");
+
+        assertFalse(books.isEmpty());
     }
 }

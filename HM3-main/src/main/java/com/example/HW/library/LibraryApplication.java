@@ -5,18 +5,13 @@ import com.example.HW.library.components.Library;
 
 import com.example.HW.library.model.Book;
 import com.example.HW.library.model.Issue;
-import com.example.HW.library.model.Student;
 import com.example.HW.library.repository.BookRepository;
 import com.example.HW.library.repository.IssueRepository;
-import com.example.HW.library.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @SpringBootApplication
@@ -31,8 +26,6 @@ public class LibraryApplication implements CommandLineRunner {
 	Library library;
 	@Autowired
 	BookRepository bookRepository;
-	@Autowired
-	StudentRepository studentRepository;
 	@Autowired
 	IssueRepository issueRepository;
 
@@ -52,8 +45,16 @@ public class LibraryApplication implements CommandLineRunner {
 			System.out.println("6. Issue book to student");
 			System.out.println("7. List books by usn");
 			System.out.println("8. Exit");
-			System.out.print("Enter your choice: ");
-			choice = scanner.nextInt();
+			while (true) {
+				System.out.print("Enter your choice: ");
+				if (scanner.hasNextInt()) {
+					choice = scanner.nextInt();
+					break;
+				} else {
+					System.out.println("That's not a valid input. Please enter a number.");
+					scanner.next(); // Clear the invalid input
+				}
+			}
 			scanner.nextLine(); // Consume the newline character
 
 			switch (choice) {
@@ -69,14 +70,35 @@ public class LibraryApplication implements CommandLineRunner {
 					System.out.print("Enter author email: ");
 					String authorEmail = scanner.nextLine();
 					while (!authorEmail.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
-						System.out.println("Invalid email ! Try again");
-						System.out.println("Enter author email: ");
+						System.out.println("\nInvalid email ! Try again");
+						System.out.print("Enter author email: ");
 						authorEmail = scanner.next();
+						scanner.nextLine(); // Consume the newline character
 					}
-					System.out.print("Enter book ISBN: ");
-					String isbn = scanner.nextLine();
-					System.out.print("Enter quantity of books: ");
-					int quantity = scanner.nextInt();
+					String isbn;
+					while (true) {
+						System.out.print("Enter book ISBN: ");
+						String test = scanner.nextLine();
+						Optional<Book> bookOptional = bookRepository.findById(test);
+						if (bookOptional.isEmpty()) {
+							isbn = test;
+							break;
+						} else {
+							System.out.println("\nThis book already exist. please try again");
+//							scanner.next(); // Clear the invalid input
+						}
+					}
+					int quantity;
+					while (true) {
+						System.out.print("Enter quantity of books: ");
+						if (scanner.hasNextInt()) {
+							quantity = scanner.nextInt();
+							break;
+						} else {
+							System.out.println("\nThat's not a valid number. Try again.");
+							scanner.next(); // Clear the invalid input
+						}
+					}
 					scanner.nextLine(); // Consume the newline character
 
 					Book book = new Book(isbn,title,category,quantity);
@@ -88,7 +110,7 @@ public class LibraryApplication implements CommandLineRunner {
 
 					System.out.print("Enter book title: ");
 					String title1 = scanner.nextLine();
-					while (!title1.matches("[A-Za-z\\s]+") || title1.length() <= 3) {
+					while (!title1.matches("[A-Za-z\\s]+") || title1.length() < 2) {
 						System.out.println("Please enter valid title");
 						System.out.println("Enter book title: ");
 						title1 = scanner.next();
@@ -168,11 +190,22 @@ public class LibraryApplication implements CommandLineRunner {
 					String usn = scanner.next();
 					System.out.print("Enter student name: ");
 					String studentName = scanner.next();
-					System.out.print("Enter book ISBN: ");
-					isbn = scanner.next();
+					String isbn1;
+					while (true) {
+						System.out.print("Enter book ISBN: ");
+						String test1 = scanner.next();
+						Optional<Book> bookOptionalTest = bookRepository.findById(test1);
+						if (bookOptionalTest.isPresent()) {
+								isbn1 = test1;
+								break;
+						} else {
+							System.out.println("\nThis book is not exist in the library. please try another book");
+//							scanner.next(); // Clear the invalid input
+						}
+					}
 
-					Issue issue = library.createIssue(usn,studentName,isbn);
-					Optional<Book> bookOptional1 = bookRepository.findById(isbn);
+					Issue issue = library.createIssue(usn,studentName,isbn1);
+					Optional<Book> bookOptional1 = bookRepository.findById(isbn1);
 					System.out.println("\nBook "+bookOptional1.get().getTitle()+" issued. Return date : "+ issue.getReturnDate());
 					break;
 
